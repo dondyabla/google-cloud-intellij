@@ -135,7 +135,7 @@ public class AppEngineSupportProvider extends FrameworkSupportInModuleProvider {
       final ModifiableRootModel rootModel,
       FrameworkSupportModel frameworkSupportModel,
       Set<AppEngineStandardMavenLibrary> librariesToAdd) {
-    FacetType<AppEngineStandardFacet, AppEngineFacetConfiguration> facetType
+    FacetType<AppEngineStandardFacet, AppEngineStandardFacetConfiguration> facetType
         = AppEngineStandardFacet.getFacetType();
     AppEngineStandardFacet appEngineStandardFacet = FacetManager.getInstance(module)
         .addFacet(facetType, facetType.getDefaultFacetName(), null);

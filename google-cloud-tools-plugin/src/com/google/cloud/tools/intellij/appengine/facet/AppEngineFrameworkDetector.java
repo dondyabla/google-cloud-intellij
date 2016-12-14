@@ -36,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
  * @author nik
  */
 public class AppEngineFrameworkDetector extends
-    FacetBasedFrameworkDetector<AppEngineStandardFacet, AppEngineFacetConfiguration> {
+    FacetBasedFrameworkDetector<AppEngineStandardFacet, AppEngineStandardFacetConfiguration> {
 
   public AppEngineFrameworkDetector() {
     super("appengine-java");
@@ -56,7 +56,7 @@ public class AppEngineFrameworkDetector extends
   }
 
   @Override
-  public FacetType<AppEngineStandardFacet, AppEngineFacetConfiguration> getFacetType() {
+  public FacetType<AppEngineStandardFacet, AppEngineStandardFacetConfiguration> getFacetType() {
     return FacetType.findInstance(AppEngineStandardFacetType.class);
   }
 

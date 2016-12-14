@@ -29,18 +29,18 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @author nik
  */
-public class AppEngineStandardFacet extends Facet<AppEngineFacetConfiguration> {
+public class AppEngineStandardFacet extends Facet<AppEngineStandardFacetConfiguration> {
 
   public static final FacetTypeId<AppEngineStandardFacet> ID = new FacetTypeId<>("appEngine");
 
   public AppEngineStandardFacet(@NotNull FacetType facetType,
       @NotNull Module module,
       @NotNull String name,
-      @NotNull AppEngineFacetConfiguration configuration) {
+      @NotNull AppEngineStandardFacetConfiguration configuration) {
     super(facetType, module, name, configuration, null);
   }
 
-  public static FacetType<AppEngineStandardFacet, AppEngineFacetConfiguration> getFacetType() {
+  public static FacetType<AppEngineStandardFacet, AppEngineStandardFacetConfiguration> getFacetType() {
     return FacetTypeRegistry.getInstance().findFacetType(ID);
   }
 

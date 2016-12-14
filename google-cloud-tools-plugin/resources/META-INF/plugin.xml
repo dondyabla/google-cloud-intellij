@@ -206,11 +206,14 @@
             implementation="com.google.cloud.tools.intellij.appengine.cloud.AppEngineArtifactDeploymentSourceType"/>
 
     <framework.type implementation="com.google.cloud.tools.intellij.appengine.facet.AppEngineFrameworkType"/>
+    <framework.type implementation="com.google.cloud.tools.intellij.appengine.facet.flexible.AppEngineFlexibleFrameworkType"/>
     <fileTemplateGroup implementation="com.google.cloud.tools.intellij.appengine.facet.AppEngineTemplateGroupDescriptorFactory"/>
     <facetType implementation="com.google.cloud.tools.intellij.appengine.facet.AppEngineStandardFacetType"/>
+    <facetType implementation="com.google.cloud.tools.intellij.appengine.facet.flexible.AppEngineFlexibleFacetType"/>
     <project.converterProvider implementation="com.google.cloud.tools.intellij.appengine.migration.AppEngineStandardFacetConverterProvider"/>
     <project.converterProvider implementation="com.google.cloud.tools.intellij.appengine.migration.AppEngineStandardFacetMigrationConverterProvider"/>
     <framework.detector implementation="com.google.cloud.tools.intellij.appengine.facet.AppEngineFrameworkDetector"/>
+    <framework.detector implementation="com.google.cloud.tools.intellij.appengine.facet.flexible.AppEngineFlexibleFrameworkDetector"/>
 
     <xml.schemaProvider implementation="com.google.cloud.tools.intellij.appengine.descriptor.AppEngineWebSchemaProvider"/>
 

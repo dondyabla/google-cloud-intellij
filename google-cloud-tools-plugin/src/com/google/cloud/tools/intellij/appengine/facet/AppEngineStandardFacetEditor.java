@@ -50,14 +50,14 @@ import javax.swing.JPanel;
  */
 public class AppEngineStandardFacetEditor extends FacetEditorTab {
 
-  private final AppEngineFacetConfiguration facetConfiguration;
+  private final AppEngineStandardFacetConfiguration facetConfiguration;
   private final FacetEditorContext context;
   private JPanel mainPanel;
   private AppEngineStandardLibraryPanel appEngineStandardLibraryPanel;
   private Listener libraryListener;
 
 
-  public AppEngineStandardFacetEditor(AppEngineFacetConfiguration facetConfiguration,
+  public AppEngineStandardFacetEditor(AppEngineStandardFacetConfiguration facetConfiguration,
       FacetEditorContext context) {
     this.facetConfiguration = facetConfiguration;
     this.context = context;

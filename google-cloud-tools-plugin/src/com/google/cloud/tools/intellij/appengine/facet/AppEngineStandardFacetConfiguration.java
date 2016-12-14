@@ -16,7 +16,7 @@
 
 package com.google.cloud.tools.intellij.appengine.facet;
 
-import com.google.cloud.tools.intellij.appengine.facet.AppEngineFacetConfiguration.AppEngineFacetProperties;
+import com.google.cloud.tools.intellij.appengine.facet.AppEngineStandardFacetConfiguration.AppEngineStandardFacetProperties;
 import com.google.common.collect.Sets;
 
 import com.intellij.facet.FacetConfiguration;
@@ -39,11 +39,11 @@ import java.util.Set;
 /**
  * @author nik
  */
-public class AppEngineFacetConfiguration implements FacetConfiguration,
-    PersistentStateComponent<AppEngineFacetProperties> {
+public class AppEngineStandardFacetConfiguration implements FacetConfiguration,
+    PersistentStateComponent<AppEngineStandardFacetProperties> {
 
-  private AppEngineFacetProperties properties
-      = new AppEngineFacetProperties();
+  private AppEngineStandardFacetProperties properties
+      = new AppEngineStandardFacetProperties();
 
   @Override
   public FacetEditorTab[] createEditorTabs(FacetEditorContext editorContext,
@@ -85,16 +85,16 @@ public class AppEngineFacetConfiguration implements FacetConfiguration,
   }
 
   @Override
-  public AppEngineFacetProperties getState() {
+  public AppEngineStandardFacetProperties getState() {
     return properties;
   }
 
   @Override
-  public void loadState(AppEngineFacetProperties state) {
+  public void loadState(AppEngineStandardFacetProperties state) {
     properties = state;
   }
 
-  public static class AppEngineFacetProperties {
+  public static class AppEngineStandardFacetProperties {
 
   }
 }
