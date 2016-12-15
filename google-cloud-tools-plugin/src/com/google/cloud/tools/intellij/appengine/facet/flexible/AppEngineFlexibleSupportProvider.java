@@ -16,6 +16,8 @@
 
 package com.google.cloud.tools.intellij.appengine.facet.flexible;
 
+import com.intellij.facet.FacetManager;
+import com.intellij.facet.FacetType;
 import com.intellij.framework.FrameworkTypeEx;
 import com.intellij.framework.addSupport.FrameworkSupportInModuleConfigurable;
 import com.intellij.framework.addSupport.FrameworkSupportInModuleProvider;
@@ -28,6 +30,9 @@ import com.intellij.openapi.roots.ModifiableRootModel;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.nio.file.InvalidPathException;
+import java.nio.file.Paths;
 
 import javax.swing.JComponent;
 
@@ -64,9 +69,26 @@ public class AppEngineFlexibleSupportProvider extends FrameworkSupportInModulePr
     }
 
     @Override
+    public void onFrameworkSelectionChanged(boolean selected) {
+      if (selected) {
+        newProjectPanel.getAppYamlComponent().setEnabled(
+            newProjectPanel.getConfigurationMode().equals(NewFlexibleProjectPanel.CUSTOM));
+        newProjectPanel.getDockerfileComponent().setEnabled(
+            newProjectPanel.getConfigurationMode().equals(NewFlexibleProjectPanel.CUSTOM));
+      }
+    }
+
+    @Override
     public void addSupport(@NotNull Module module, @NotNull ModifiableRootModel rootModel,
         @NotNull ModifiableModelsProvider modifiableModelsProvider) {
+      FacetType<AppEngineFlexibleFacet, AppEngineFlexibleFacetConfiguration> facetType =
+          AppEngineFlexibleFacet.getFacetType();
+      AppEngineFlexibleFacet facet = FacetManager.getInstance(module).addFacet(
+          facetType, facetType.getPresentableName(), null /* underlyingFacet */);
 
+      facet.getConfiguration().setConfigurationMode(newProjectPanel.getConfigurationMode());
+      facet.getConfiguration().setAppYamlPath(newProjectPanel.getAppYaml());
+      facet.getConfiguration().setDockerfilePath(newProjectPanel.getDockerfile());
     }
   }
 }

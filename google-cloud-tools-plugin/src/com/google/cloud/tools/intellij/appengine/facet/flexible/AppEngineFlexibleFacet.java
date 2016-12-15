@@ -18,6 +18,7 @@ package com.google.cloud.tools.intellij.appengine.facet.flexible;
 
 import com.intellij.facet.Facet;
 import com.intellij.facet.FacetType;
+import com.intellij.facet.FacetTypeRegistry;
 import com.intellij.openapi.module.Module;
 
 import org.jetbrains.annotations.NotNull;
@@ -32,5 +33,10 @@ public class AppEngineFlexibleFacet extends Facet<AppEngineFlexibleFacetConfigur
       @NotNull String name,
       @NotNull AppEngineFlexibleFacetConfiguration configuration) {
     super(facetType, module, name, configuration, null /* underlyingFacet */);
+  }
+
+  public static FacetType<AppEngineFlexibleFacet,
+      AppEngineFlexibleFacetConfiguration> getFacetType() {
+    return FacetTypeRegistry.getInstance().findFacetType(AppEngineFlexibleFacetType.ID);
   }
 }

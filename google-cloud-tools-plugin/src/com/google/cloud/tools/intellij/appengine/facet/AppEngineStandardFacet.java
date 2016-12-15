@@ -40,7 +40,8 @@ public class AppEngineStandardFacet extends Facet<AppEngineStandardFacetConfigur
     super(facetType, module, name, configuration, null);
   }
 
-  public static FacetType<AppEngineStandardFacet, AppEngineStandardFacetConfiguration> getFacetType() {
+  public static FacetType<AppEngineStandardFacet,
+      AppEngineStandardFacetConfiguration> getFacetType() {
     return FacetTypeRegistry.getInstance().findFacetType(ID);
   }
 
