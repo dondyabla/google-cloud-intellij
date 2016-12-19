@@ -44,6 +44,7 @@ public class NewFlexibleProjectPanel {
     configurationMode.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent event) {
+        // Freshest information can be found in event rather than configurationMode, apparently.
         JComboBox source = (JComboBox) event.getSource();
         if (source.getSelectedItem().equals(
             AppEngineFlexibleFacetConfiguration.AUTOMATICALLY_GENERATED)) {
