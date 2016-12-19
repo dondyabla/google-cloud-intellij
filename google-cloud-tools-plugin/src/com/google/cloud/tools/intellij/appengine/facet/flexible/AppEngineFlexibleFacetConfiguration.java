@@ -35,9 +35,12 @@ import java.nio.file.Path;
 public class AppEngineFlexibleFacetConfiguration implements FacetConfiguration,
     PersistentStateComponent<AppEngineFlexibleFacetConfiguration> {
 
-  private String configurationMode;
-  private String appYamlPath;
-  private String dockerfilePath;
+  public static final String AUTOMATICALLY_GENERATED = "Automatically generated";
+  public static final String CUSTOM = "Custom";
+
+  private String configurationMode = AUTOMATICALLY_GENERATED;
+  private String appYamlPath = "";
+  private String dockerfilePath = "";
 
   @Override
   public FacetEditorTab[] createEditorTabs(FacetEditorContext editorContext,

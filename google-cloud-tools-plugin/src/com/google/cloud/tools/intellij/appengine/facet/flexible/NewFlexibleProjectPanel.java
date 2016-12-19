@@ -30,26 +30,26 @@ import javax.swing.JPanel;
  */
 public class NewFlexibleProjectPanel {
 
-  public static final String AUTOMATICALLY_GENERATED = "Automatically generated";
-  public static final String CUSTOM = "Custom";
-
   private JComboBox configurationMode;
   private JPanel mainPanel;
   private TextFieldWithBrowseButton appYaml;
   private TextFieldWithBrowseButton dockerfile;
 
   public NewFlexibleProjectPanel() {
-    configurationMode.getModel().setSelectedItem(AUTOMATICALLY_GENERATED);
+    configurationMode.getModel().setSelectedItem(
+        AppEngineFlexibleFacetConfiguration.AUTOMATICALLY_GENERATED);
     appYaml.setEnabled(false);
     dockerfile.setEnabled(false);
 
     configurationMode.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent event) {
-        if (configurationMode.getModel().getSelectedItem().equals(AUTOMATICALLY_GENERATED)) {
+        JComboBox source = (JComboBox) event.getSource();
+        if (source.getSelectedItem().equals(
+            AppEngineFlexibleFacetConfiguration.AUTOMATICALLY_GENERATED)) {
           appYaml.setEnabled(false);
           dockerfile.setEnabled(false);
-        } else if (configurationMode.getModel().getSelectedItem().equals(CUSTOM)) {
+        } else if (source.getSelectedItem().equals(AppEngineFlexibleFacetConfiguration.CUSTOM)) {
           appYaml.setEnabled(true);
           dockerfile.setEnabled(true);
         }

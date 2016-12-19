@@ -72,9 +72,11 @@ public class AppEngineFlexibleSupportProvider extends FrameworkSupportInModulePr
     public void onFrameworkSelectionChanged(boolean selected) {
       if (selected) {
         newProjectPanel.getAppYamlComponent().setEnabled(
-            newProjectPanel.getConfigurationMode().equals(NewFlexibleProjectPanel.CUSTOM));
+            newProjectPanel.getConfigurationMode().equals(
+                AppEngineFlexibleFacetConfiguration.CUSTOM));
         newProjectPanel.getDockerfileComponent().setEnabled(
-            newProjectPanel.getConfigurationMode().equals(NewFlexibleProjectPanel.CUSTOM));
+            newProjectPanel.getConfigurationMode().equals(
+                AppEngineFlexibleFacetConfiguration.CUSTOM));
       }
     }
 
