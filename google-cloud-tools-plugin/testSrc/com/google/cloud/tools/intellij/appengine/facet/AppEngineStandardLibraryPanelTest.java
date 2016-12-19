@@ -19,6 +19,9 @@ package com.google.cloud.tools.intellij.appengine.facet;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineStandardLibraryPanel;
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineStandardMavenLibrary;
+
 import org.junit.Before;
 import org.junit.Test;
 

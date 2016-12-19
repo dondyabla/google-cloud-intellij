@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.cloud.tools.intellij.appengine.facet;
+package com.google.cloud.tools.intellij.appengine.facet.standard;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;

@@ -20,8 +20,8 @@ import com.google.cloud.tools.intellij.appengine.cloud.AppEngineArtifactDeployme
 import com.google.cloud.tools.intellij.appengine.cloud.AppEngineEnvironment;
 import com.google.cloud.tools.intellij.appengine.cloud.MavenBuildDeploymentSource;
 import com.google.cloud.tools.intellij.appengine.cloud.UserSpecifiedPathDeploymentSource;
-import com.google.cloud.tools.intellij.appengine.facet.AppEngineStandardFacet;
-import com.google.cloud.tools.intellij.appengine.facet.AppEngineStandardWebIntegration;
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineStandardFacet;
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineStandardWebIntegration;
 import com.google.cloud.tools.intellij.appengine.project.AppEngineAssetProvider;
 import com.google.cloud.tools.intellij.appengine.project.AppEngineProjectService;
 import com.google.common.collect.Lists;

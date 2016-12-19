@@ -21,12 +21,12 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.google.cloud.tools.intellij.appengine.facet.AppEngineStandardFacet;
-import com.google.cloud.tools.intellij.appengine.facet.AppEngineFrameworkType;
-import com.google.cloud.tools.intellij.appengine.facet.AppEngineStandardLibraryPanel;
-import com.google.cloud.tools.intellij.appengine.facet.AppEngineSupportProvider;
-import com.google.cloud.tools.intellij.appengine.facet.AppEngineSupportProvider.AppEngineSupportConfigurable;
-import com.google.cloud.tools.intellij.appengine.facet.MavenRepositoryLibraryDownloader;
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineStandardFacet;
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineFrameworkType;
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineStandardLibraryPanel;
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineSupportProvider;
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineSupportProvider.AppEngineSupportConfigurable;
+import com.google.cloud.tools.intellij.appengine.facet.standard.MavenRepositoryLibraryDownloader;
 import com.google.cloud.tools.intellij.appengine.sdk.CloudSdkService;
 import com.google.cloud.tools.intellij.appengine.server.run.AppEngineServerConfigurationType;
 import com.google.cloud.tools.intellij.compiler.artifacts.ArtifactsTestUtil;

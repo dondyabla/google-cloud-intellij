@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.cloud.tools.intellij.appengine.facet;
+package com.google.cloud.tools.intellij.appengine.facet.standard;
 
 import com.google.cloud.tools.intellij.util.GctBundle;
 import com.google.common.base.Predicate;

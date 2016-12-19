@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.google.cloud.tools.intellij.appengine.facet.impl;
+package com.google.cloud.tools.intellij.appengine.facet.standard.impl;
 
-import com.google.cloud.tools.intellij.appengine.facet.AppEngineStandardWebIntegration;
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineStandardWebIntegration;
 
 import com.intellij.framework.addSupport.FrameworkSupportInModuleProvider;
 import com.intellij.ide.util.frameworkSupport.FrameworkRole;

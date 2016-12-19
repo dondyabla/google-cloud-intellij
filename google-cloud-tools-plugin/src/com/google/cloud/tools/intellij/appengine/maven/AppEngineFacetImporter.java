@@ -16,10 +16,10 @@
 
 package com.google.cloud.tools.intellij.appengine.maven;
 
-import com.google.cloud.tools.intellij.appengine.facet.AppEngineStandardFacetConfiguration;
-import com.google.cloud.tools.intellij.appengine.facet.AppEngineStandardFacet;
-import com.google.cloud.tools.intellij.appengine.facet.AppEngineStandardFacetType;
-import com.google.cloud.tools.intellij.appengine.facet.AppEngineStandardWebIntegration;
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineStandardFacetConfiguration;
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineStandardFacet;
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineStandardFacetType;
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineStandardWebIntegration;
 
 import com.intellij.facet.FacetType;
 import com.intellij.openapi.externalSystem.service.project.IdeModifiableModelsProvider;

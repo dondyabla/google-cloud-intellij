@@ -16,8 +16,8 @@
 
 package com.google.cloud.tools.intellij.appengine.facet.impl;
 
-import com.google.cloud.tools.intellij.appengine.facet.AppEngineStandardFacet;
-import com.google.cloud.tools.intellij.appengine.facet.AppEngineStandardWebIntegration;
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineStandardFacet;
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineStandardWebIntegration;
 
 import com.intellij.javaee.supportProvider.JavaeeFrameworkSupportContributionModel;
 import com.intellij.javaee.supportProvider.JavaeeFrameworkSupportContributor;

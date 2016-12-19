@@ -18,7 +18,7 @@ package com.google.cloud.tools.intellij.startup;
 
 import com.google.cloud.tools.intellij.appengine.cloud.AppEngineEnvironment;
 import com.google.cloud.tools.intellij.appengine.cloud.AppEngineStandardRuntime;
-import com.google.cloud.tools.intellij.appengine.facet.AppEngineStandardFacet;
+import com.google.cloud.tools.intellij.appengine.facet.standard.AppEngineStandardFacet;
 import com.google.cloud.tools.intellij.appengine.project.AppEngineAssetProvider;
 import com.google.cloud.tools.intellij.appengine.project.AppEngineProjectService;
 import com.google.cloud.tools.intellij.util.GctBundle;
