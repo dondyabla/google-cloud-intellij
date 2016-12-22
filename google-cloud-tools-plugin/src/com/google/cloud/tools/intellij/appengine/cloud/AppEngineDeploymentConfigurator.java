@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * Sets up the configuration elements for an AppEngine Cloud deployment.
  */
-class AppEngineDeploymentConfigurator extends
+public class AppEngineDeploymentConfigurator extends
     DeploymentConfigurator<AppEngineDeploymentConfiguration, AppEngineServerConfiguration> {
 
   private static final Logger logger = Logger.getInstance(AppEngineDeploymentConfigurator.class);

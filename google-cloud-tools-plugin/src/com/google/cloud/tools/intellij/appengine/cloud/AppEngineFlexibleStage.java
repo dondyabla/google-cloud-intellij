@@ -16,6 +16,8 @@
 
 package com.google.cloud.tools.intellij.appengine.cloud;
 
+import com.google.cloud.tools.intellij.appengine.cloud.flexible.AppEngineFlexibleDeploymentConfiguration;
+
 import com.intellij.remoteServer.runtime.log.LoggingHandler;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +35,7 @@ public class AppEngineFlexibleStage {
   private LoggingHandler loggingHandler;
   private Path deploymentArtifactPath;
   private AppEngineDeploymentConfiguration deploymentConfiguration;
+  private AppEngineFlexibleDeploymentConfiguration flexDeploymentConfiguration;
 
   /**
    * Initialize the staging dependencies.
@@ -49,10 +52,29 @@ public class AppEngineFlexibleStage {
   }
 
   /**
+   * Initialize the staging dependencies.
+   */
+  public AppEngineFlexibleStage(
+      @NotNull CloudSdkAppEngineHelper helper,
+      @NotNull LoggingHandler loggingHandler,
+      @NotNull Path deploymentArtifactPath,
+      @NotNull AppEngineFlexibleDeploymentConfiguration flexDeploymentConfiguration) {
+    this.helper = helper;
+    this.loggingHandler = loggingHandler;
+    this.deploymentArtifactPath = deploymentArtifactPath;
+    this.flexDeploymentConfiguration = flexDeploymentConfiguration;
+  }
+
+  /**
    * Given a local staging directory, stage the application in preparation for deployment to the
    * App Engine flexible environment.
    */
   public void stage(@NotNull Path stagingDirectory) {
+    if (flexDeploymentConfiguration != null) {
+      stage2(stagingDirectory);
+      return;
+    }
+
     try {
       Path stagedArtifactPath = stagingDirectory.resolve(
           "target" + AppEngineFlexDeploymentArtifactType.typeForPath(deploymentArtifactPath));
@@ -71,6 +93,22 @@ public class AppEngineFlexibleStage {
     } catch (IOException ex) {
       loggingHandler.print(ex.getMessage() + "\n");
       throw new RuntimeException(ex);
+    }
+  }
+
+  private void stage2(Path stagingDirectory) {
+    try {
+      Path stagedArtifactPath = stagingDirectory.resolve(
+          "target" + AppEngineFlexDeploymentArtifactType.typeForPath(deploymentArtifactPath));
+      Files.copy(deploymentArtifactPath, stagedArtifactPath);
+
+      Files.copy(Paths.get(flexDeploymentConfiguration.getAppYamlPath()),
+          stagingDirectory.resolve("app.yaml"));
+
+      Files.copy(Paths.get(flexDeploymentConfiguration.getDockerfilePath()),
+          stagingDirectory.resolve("Dockerfile"));
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
     }
   }
 }

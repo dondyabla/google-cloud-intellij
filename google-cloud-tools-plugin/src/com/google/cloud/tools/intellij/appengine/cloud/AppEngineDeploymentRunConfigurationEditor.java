@@ -382,10 +382,10 @@ public class AppEngineDeploymentRunConfigurationEditor extends
     } else if (getConfigType() == ConfigType.CUSTOM) {
       if (StringUtils.isBlank(appYamlPathField.getText())) {
         throw new ConfigurationException(
-            GctBundle.message("appengine.flex.config.custom.app.yaml.error"));
+            GctBundle.message("appengine.flex.config.browse.app.yaml"));
       } else if (StringUtils.isBlank(dockerFilePathField.getText())) {
         throw new ConfigurationException(
-            GctBundle.message("appengine.flex.config.custom.dockerfile.error"));
+            GctBundle.message("appengine.flex.config.browse.dockerfile"));
       }
     } else {
       Set<CloudSdkValidationResult> validationResults =

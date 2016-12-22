@@ -154,7 +154,7 @@ public class AppEngineServerModel implements ServerModel, DeploysArtifactsOnStar
     }
 
     final AppEngineStandardFacet facet = AppEngineUtil
-        .findAppEngineFacet(commonModel.getProject(), artifact);
+        .findAppEngineStandardFacet(commonModel.getProject(), artifact);
     if (facet == null) {
       throw new RuntimeConfigurationWarning(
           "App Engine facet not found in '" + artifact.getName() + "' artifact");

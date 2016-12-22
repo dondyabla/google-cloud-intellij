@@ -113,7 +113,7 @@ public class AppEngineCloudType extends ServerType<AppEngineServerConfiguration>
     return new AppEngineServerConnector();
   }
 
-  private static class AppEngineServerConnector extends
+  public static class AppEngineServerConnector extends
       ServerConnector<AppEngineDeploymentConfiguration> {
 
     @Override

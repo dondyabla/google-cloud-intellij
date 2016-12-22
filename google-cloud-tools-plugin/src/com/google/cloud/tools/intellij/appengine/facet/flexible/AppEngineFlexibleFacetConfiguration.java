@@ -38,7 +38,7 @@ public class AppEngineFlexibleFacetConfiguration implements FacetConfiguration,
   public static final String AUTOMATICALLY_GENERATED = "Automatically generated";
   public static final String CUSTOM = "Custom";
 
-  private String configurationMode = AUTOMATICALLY_GENERATED;
+  private String configurationMode = CUSTOM;
   private String appYamlPath = "";
   private String dockerfilePath = "";
 

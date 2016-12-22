@@ -16,11 +16,19 @@
 
 package com.google.cloud.tools.intellij.appengine.facet.flexible;
 
+import com.google.cloud.tools.intellij.util.GctBundle;
+
+import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.openapi.util.Comparing;
+import com.intellij.openapi.util.Condition;
+import com.intellij.openapi.vfs.VirtualFile;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.annotation.Nullable;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -36,10 +44,11 @@ public class NewFlexibleProjectPanel {
   private TextFieldWithBrowseButton dockerfile;
 
   public NewFlexibleProjectPanel() {
-    configurationMode.getModel().setSelectedItem(
-        AppEngineFlexibleFacetConfiguration.AUTOMATICALLY_GENERATED);
-    appYaml.setEnabled(false);
-    dockerfile.setEnabled(false);
+    this(null /* project */);
+  }
+
+  public NewFlexibleProjectPanel(@Nullable Project project) {
+    configurationMode.getModel().setSelectedItem(AppEngineFlexibleFacetConfiguration.CUSTOM);
 
     configurationMode.addActionListener(new ActionListener() {
       @Override
@@ -56,6 +65,35 @@ public class NewFlexibleProjectPanel {
         }
       }
     });
+
+    appYaml.addBrowseFolderListener(
+        GctBundle.message("appengine.flex.config.browse.app.yaml"),
+        null /* description */,
+        project,
+        FileChooserDescriptorFactory.createSingleFileDescriptor().withFileFilter(
+            new Condition<VirtualFile>() {
+              @Override
+              public boolean value(VirtualFile virtualFile) {
+                return Comparing.equal(virtualFile.getExtension(), "yaml")
+                    || Comparing.equal(virtualFile.getExtension(), "yml");
+              }
+            }
+        )
+    );
+
+    dockerfile.addBrowseFolderListener(
+        GctBundle.message("appengine.flex.config.browse.dockerfile"),
+        null /* description */,
+        project,
+        FileChooserDescriptorFactory.createSingleFileDescriptor().withFileFilter(
+            new Condition<VirtualFile>() {
+              @Override
+              public boolean value(VirtualFile virtualFile) {
+                return Comparing.equal(virtualFile.getExtension(), "");
+              }
+            }
+        )
+    );
   }
 
   public JComponent getComponent() {
@@ -86,11 +124,11 @@ public class NewFlexibleProjectPanel {
     this.dockerfile.setText(dockerfile);
   }
 
-  public JComponent getAppYamlComponent() {
+  public TextFieldWithBrowseButton getAppYamlComponent() {
     return appYaml;
   }
 
-  public JComponent getDockerfileComponent() {
+  public TextFieldWithBrowseButton getDockerfileComponent() {
     return dockerfile;
   }
 }

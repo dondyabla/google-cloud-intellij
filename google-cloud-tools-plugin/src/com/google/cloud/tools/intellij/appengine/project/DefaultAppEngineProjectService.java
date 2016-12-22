@@ -35,6 +35,12 @@ import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.jetbrains.plugins.gradle.util.GradleConstants;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 
 /**
@@ -197,4 +203,22 @@ public class DefaultAppEngineProjectService extends AppEngineProjectService {
     }
   }
 
+  @Override
+  public String getServiceNameFromAppYaml(@NotNull String appYamlPathString) {
+    Path appYamlPath;
+    try {
+      appYamlPath = Paths.get(appYamlPathString);
+    } catch (InvalidPathException ipe) {
+      return null;
+    }
+
+    try {
+      for (String line : Files.readAllLines(appYamlPath)) {
+
+      }
+    } catch (IOException ioe) {
+      return null;
+    }
+    return null;
+  }
 }

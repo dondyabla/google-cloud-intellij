@@ -101,4 +101,6 @@ public abstract class AppEngineProjectService {
    */
   public abstract boolean isJarOrWarMavenBuild(@NotNull Module module);
 
+  public abstract String getServiceNameFromAppYaml(@NotNull String appYamlPath);
+
 }

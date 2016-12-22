@@ -167,7 +167,7 @@ public class AppEngineUtil {
   }
 
   @Nullable
-  public static AppEngineStandardFacet findAppEngineFacet(@NotNull Project project,
+  public static AppEngineStandardFacet findAppEngineStandardFacet(@NotNull Project project,
       @NotNull Artifact artifact) {
     // TODO(joaomartins): Find out why the GAE facet isn't being added to Gradle projects.
     // https://github.com/GoogleCloudPlatform/gcloud-intellij/issues/835
@@ -202,7 +202,7 @@ public class AppEngineUtil {
         : null;
   }
 
-  private static AppEngineArtifactDeploymentSource createArtifactDeploymentSource(
+  public static AppEngineArtifactDeploymentSource createArtifactDeploymentSource(
       @NotNull Project project,
       @NotNull Artifact artifact,
       @NotNull AppEngineEnvironment environment) {
@@ -237,7 +237,7 @@ public class AppEngineUtil {
     for (Artifact artifact : ArtifactManager.getInstance(project).getArtifacts()) {
       if (AppEngineStandardWebIntegration.getInstance().getAppEngineTargetArtifactTypes()
           .contains(artifact.getArtifactType())
-          && (!withAppEngineFacetOnly || findAppEngineFacet(project, artifact) != null)) {
+          && (!withAppEngineFacetOnly || findAppEngineStandardFacet(project, artifact) != null)) {
         artifacts.add(artifact);
       }
     }
