@@ -16,6 +16,8 @@
 
 package com.google.cloud.tools.intellij.appengine.facet.flexible;
 
+import com.google.cloud.tools.intellij.appengine.cloud.AppEngineDeploymentConfiguration.ConfigType;
+
 import com.intellij.facet.FacetConfiguration;
 import com.intellij.facet.ui.FacetEditorContext;
 import com.intellij.facet.ui.FacetEditorTab;
@@ -27,25 +29,20 @@ import com.intellij.openapi.util.WriteExternalException;
 import org.jdom.Element;
 import org.jetbrains.annotations.Nullable;
 
-import java.nio.file.Path;
-
 /**
  * Created by joaomartins on 12/13/16.
  */
 public class AppEngineFlexibleFacetConfiguration implements FacetConfiguration,
     PersistentStateComponent<AppEngineFlexibleFacetConfiguration> {
 
-  public static final String AUTOMATICALLY_GENERATED = "Automatically generated";
-  public static final String CUSTOM = "Custom";
-
-  private String configurationMode = CUSTOM;
+  private ConfigType configurationType = ConfigType.CUSTOM;
   private String appYamlPath = "";
   private String dockerfilePath = "";
 
   @Override
   public FacetEditorTab[] createEditorTabs(FacetEditorContext editorContext,
       FacetValidatorsManager validatorsManager) {
-    return new FacetEditorTab[]{new FlexibleFacetConfigurationPanel(this)};
+    return new FacetEditorTab[]{new FlexibleFacetEditor(editorContext.getProject())};
   }
 
   @Override
@@ -66,13 +63,13 @@ public class AppEngineFlexibleFacetConfiguration implements FacetConfiguration,
 
   @Override
   public void loadState(AppEngineFlexibleFacetConfiguration state) {
-    configurationMode = state.getConfigurationMode();
+    configurationType = state.getConfigurationType();
     appYamlPath = state.getAppYamlPath();
     dockerfilePath = state.getDockerfilePath();
   }
 
-  public String getConfigurationMode() {
-    return configurationMode;
+  public ConfigType getConfigurationType() {
+    return configurationType;
   }
 
   public String getAppYamlPath() {
@@ -83,8 +80,8 @@ public class AppEngineFlexibleFacetConfiguration implements FacetConfiguration,
     return dockerfilePath;
   }
 
-  public void setConfigurationMode(String configurationMode) {
-    this.configurationMode = configurationMode;
+  public void setConfigurationType(ConfigType configurationType) {
+    this.configurationType = configurationType;
   }
 
   public void setAppYamlPath(String appYamlPath) {

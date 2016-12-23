@@ -16,19 +16,28 @@
 
 package com.google.cloud.tools.intellij.appengine.facet.flexible;
 
+import com.google.cloud.tools.intellij.appengine.cloud.AppEngineDeploymentConfiguration;
+import com.google.cloud.tools.intellij.appengine.cloud.AppEngineDeploymentConfiguration.ConfigType;
+import com.google.cloud.tools.intellij.appengine.sdk.CloudSdkPanel;
 import com.google.cloud.tools.intellij.util.GctBundle;
 
+import com.intellij.facet.ui.FacetEditorTab;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
+import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VirtualFile;
 
+import org.jetbrains.annotations.Nls;
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.annotation.Nullable;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -36,30 +45,39 @@ import javax.swing.JPanel;
 /**
  * Created by joaomartins on 12/14/16.
  */
-public class NewFlexibleProjectPanel {
+public class FlexibleFacetEditor extends FacetEditorTab {
 
-  private JComboBox configurationMode;
+  private JComboBox configurationTypeComboBox;
   private JPanel mainPanel;
   private TextFieldWithBrowseButton appYaml;
   private TextFieldWithBrowseButton dockerfile;
+  private CloudSdkPanel cloudSdkPanel;
+  private JPanel facetConfigurationPanel;
+  private AppEngineDeploymentConfiguration deploymentConfiguration;
 
-  public NewFlexibleProjectPanel() {
+  public FlexibleFacetEditor() {
     this(null /* project */);
   }
 
-  public NewFlexibleProjectPanel(@Nullable Project project) {
-    configurationMode.getModel().setSelectedItem(AppEngineFlexibleFacetConfiguration.CUSTOM);
+  public FlexibleFacetEditor(Project project) {
+    this(project, null /* deploymentConfiguration */);
+  }
 
-    configurationMode.addActionListener(new ActionListener() {
+
+  public FlexibleFacetEditor(@Nullable Project project,
+      @Nullable AppEngineDeploymentConfiguration deploymentConfiguration) {
+    configurationTypeComboBox.setModel(new DefaultComboBoxModel(ConfigType.values()));
+    configurationTypeComboBox.setSelectedItem(ConfigType.CUSTOM);
+
+    configurationTypeComboBox.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent event) {
-        // Freshest information can be found in event rather than configurationMode, apparently.
+        // Freshest information can be found in event rather than configurationTypeComboBox, apparently.
         JComboBox source = (JComboBox) event.getSource();
-        if (source.getSelectedItem().equals(
-            AppEngineFlexibleFacetConfiguration.AUTOMATICALLY_GENERATED)) {
+        if (source.getSelectedItem().equals(ConfigType.AUTO)) {
           appYaml.setEnabled(false);
           dockerfile.setEnabled(false);
-        } else if (source.getSelectedItem().equals(AppEngineFlexibleFacetConfiguration.CUSTOM)) {
+        } else if (source.getSelectedItem().equals(ConfigType.CUSTOM)) {
           appYaml.setEnabled(true);
           dockerfile.setEnabled(true);
         }
@@ -94,14 +112,44 @@ public class NewFlexibleProjectPanel {
             }
         )
     );
+
+    this.deploymentConfiguration = deploymentConfiguration;
   }
 
-  public JComponent getComponent() {
+  @NotNull
+  @Override
+  public JComponent createComponent() {
     return mainPanel;
   }
 
-  public String getConfigurationMode() {
-    return (String) configurationMode.getModel().getSelectedItem();
+  @Override
+  public boolean isModified() {
+    return !configurationTypeComboBox.getSelectedItem().equals(deploymentConfiguration.getConfigType())
+        || !appYaml.getText().equals(deploymentConfiguration.getAppYamlPath())
+        || !dockerfile.getText().equals(deploymentConfiguration.getDockerFilePath());
+  }
+
+  @Override
+  public void reset() {
+    configurationTypeComboBox.setSelectedItem(deploymentConfiguration.getConfigType());
+    appYaml.setText(deploymentConfiguration.getAppYamlPath());
+    dockerfile.setText(deploymentConfiguration.getDockerFilePath());
+  }
+
+  @Override
+  public void apply() throws ConfigurationException {
+    deploymentConfiguration.setConfigType((ConfigType) configurationTypeComboBox.getSelectedItem());
+    deploymentConfiguration.setAppYamlPath(appYaml.getText());
+    deploymentConfiguration.setDockerFilePath(dockerfile.getText());
+  }
+
+  @Override
+  public void disposeUIResources() {
+    // Do nothing.
+  }
+
+  public ConfigType getConfigurationTypeComboBox() {
+    return (ConfigType) configurationTypeComboBox.getSelectedItem();
   }
 
   public String getAppYaml() {
@@ -112,8 +160,8 @@ public class NewFlexibleProjectPanel {
     return dockerfile.getText();
   }
 
-  public void setConfigurationMode(String configurationMode) {
-    this.configurationMode.getModel().setSelectedItem(configurationMode);
+  public void setConfigurationTypeComboBox(ConfigType configurationType) {
+    configurationTypeComboBox.getModel().setSelectedItem(configurationType);
   }
 
   public void setAppYaml(String appYaml) {
@@ -130,5 +178,15 @@ public class NewFlexibleProjectPanel {
 
   public TextFieldWithBrowseButton getDockerfileComponent() {
     return dockerfile;
+  }
+
+  public void hideFacetConfiguration() {
+    facetConfigurationPanel.setVisible(false);
+  }
+
+  @Nls
+  @Override
+  public String getDisplayName() {
+    return GctBundle.getString("appengine.flexible.facet.name");
   }
 }

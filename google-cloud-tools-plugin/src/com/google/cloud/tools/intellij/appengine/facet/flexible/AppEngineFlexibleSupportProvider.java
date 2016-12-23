@@ -35,6 +35,7 @@ import com.intellij.facet.FacetType;
 import com.intellij.framework.FrameworkTypeEx;
 import com.intellij.framework.addSupport.FrameworkSupportInModuleConfigurable;
 import com.intellij.framework.addSupport.FrameworkSupportInModuleProvider;
+import com.intellij.ide.projectWizard.ProjectTypeStep;
 import com.intellij.ide.util.frameworkSupport.FrameworkSupportModel;
 import com.intellij.ide.util.frameworkSupport.FrameworkSupportModelImpl;
 import com.intellij.openapi.module.JavaModuleType;
@@ -94,31 +95,34 @@ public class AppEngineFlexibleSupportProvider extends FrameworkSupportInModulePr
   }
 
   static class AppEngineFlexibleSupportConfigurable extends FrameworkSupportInModuleConfigurable {
-    private NewFlexibleProjectPanel newProjectPanel;
+    private FlexibleFacetEditor configurableEditor;
 
     public AppEngineFlexibleSupportConfigurable(FrameworkSupportModel model) {
-      newProjectPanel = new NewFlexibleProjectPanel(model.getProject());
-      String contentRoot = ((FrameworkSupportModelImpl) model).getBaseDirectoryForLibrariesPath();
-      // TODO(joaomartins): Attempt to discover actual existing files.
-      newProjectPanel.setAppYaml(contentRoot + "/src/main/appengine/app.yaml");
-      newProjectPanel.setDockerfile(contentRoot + "/src/main/docker/Dockerfile");
+      configurableEditor = new FlexibleFacetEditor(model.getProject());
+      // Add framework support.
+      if (model instanceof FrameworkSupportModelImpl) {
+        String contentRoot = ((FrameworkSupportModelImpl) model).getBaseDirectoryForLibrariesPath();
+        // TODO(joaomartins): Attempt to discover actual existing files.
+        configurableEditor.setAppYaml(contentRoot + "/src/main/appengine/app.yaml");
+        configurableEditor.setDockerfile(contentRoot + "/src/main/docker/Dockerfile");
+      } else if (model instanceof ProjectTypeStep) { // THIS DOESN'T WORK SINCE model instanceof ProjectTypeStep$7
+        configurableEditor.hideFacetConfiguration();
+      }
     }
 
     @Nullable
     @Override
     public JComponent createComponent() {
-      return newProjectPanel.getComponent();
+      return configurableEditor.createComponent();
     }
 
     @Override
     public void onFrameworkSelectionChanged(boolean selected) {
       if (selected) {
-        newProjectPanel.getAppYamlComponent().setEnabled(
-            newProjectPanel.getConfigurationMode().equals(
-                AppEngineFlexibleFacetConfiguration.CUSTOM));
-        newProjectPanel.getDockerfileComponent().setEnabled(
-            newProjectPanel.getConfigurationMode().equals(
-                AppEngineFlexibleFacetConfiguration.CUSTOM));
+        configurableEditor.getAppYamlComponent().setEnabled(
+            configurableEditor.getConfigurationTypeComboBox().equals(ConfigType.CUSTOM));
+        configurableEditor.getDockerfileComponent().setEnabled(
+            configurableEditor.getConfigurationTypeComboBox().equals(ConfigType.CUSTOM));
       }
     }
 
@@ -130,9 +134,9 @@ public class AppEngineFlexibleSupportProvider extends FrameworkSupportInModulePr
       AppEngineFlexibleFacet facet = FacetManager.getInstance(module).addFacet(
           facetType, facetType.getPresentableName(), null /* underlyingFacet */);
 
-      facet.getConfiguration().setConfigurationMode(newProjectPanel.getConfigurationMode());
-      facet.getConfiguration().setAppYamlPath(newProjectPanel.getAppYaml());
-      facet.getConfiguration().setDockerfilePath(newProjectPanel.getDockerfile());
+      facet.getConfiguration().setConfigurationType(configurableEditor.getConfigurationTypeComboBox());
+      facet.getConfiguration().setAppYamlPath(configurableEditor.getAppYaml());
+      facet.getConfiguration().setDockerfilePath(configurableEditor.getDockerfile());
 
       // Only adds deployment run configuration for now. Stackdriver debugger to follow.
       setupDeploymentRunConfiguration(module, facet);
