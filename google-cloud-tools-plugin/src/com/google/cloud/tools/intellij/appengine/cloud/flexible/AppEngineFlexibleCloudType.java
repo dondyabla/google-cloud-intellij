@@ -18,8 +18,8 @@ package com.google.cloud.tools.intellij.appengine.cloud.flexible;
 
 import com.google.cloud.tools.intellij.appengine.cloud.AppEngineCloudConfigurable;
 import com.google.cloud.tools.intellij.appengine.cloud.AppEngineCloudType.AppEngineServerConnector;
-import com.google.cloud.tools.intellij.appengine.cloud.flexible.AppEngineFlexibleDeploymentConfiguration.AppEngineFlexibleDeploymentConfigurator;
-import com.google.cloud.tools.intellij.login.Services;
+import com.google.cloud.tools.intellij.appengine.cloud.AppEngineDeploymentConfigurator;
+import com.google.cloud.tools.intellij.appengine.cloud.AppEngineServerConfiguration;
 import com.google.cloud.tools.intellij.ui.GoogleCloudToolsIcons;
 import com.google.cloud.tools.intellij.util.GctBundle;
 
@@ -37,7 +37,7 @@ import javax.swing.Icon;
 /**
  * Created by joaomartins on 12/20/16.
  */
-public class AppEngineFlexibleCloudType extends ServerType<AppEngineFlexibleServerConfiguration> {
+public class AppEngineFlexibleCloudType extends ServerType<AppEngineServerConfiguration> {
 
   private static final String ID = "gcp-app-engine-flexible";
 
@@ -59,40 +59,29 @@ public class AppEngineFlexibleCloudType extends ServerType<AppEngineFlexibleServ
 
   @NotNull
   @Override
-  public AppEngineFlexibleServerConfiguration createDefaultConfiguration() {
-    return new AppEngineFlexibleServerConfiguration();
+  public AppEngineServerConfiguration createDefaultConfiguration() {
+    return new AppEngineServerConfiguration();
   }
 
   @NotNull
   @Override
-  public DeploymentConfigurator<?, AppEngineFlexibleServerConfiguration>
+  public DeploymentConfigurator<?, AppEngineServerConfiguration>
   createDeploymentConfigurator(Project project) {
-    return new AppEngineFlexibleDeploymentConfigurator(project);
+    return new AppEngineDeploymentConfigurator(project);
   }
 
   @NotNull
   @Override
   public RemoteServerConfigurable createServerConfigurable(
-      @NotNull AppEngineFlexibleServerConfiguration configuration) {
+      @NotNull AppEngineServerConfiguration configuration) {
     return new AppEngineCloudConfigurable();
   }
 
   @NotNull
   @Override
   public ServerConnector<?> createConnector(
-      @NotNull AppEngineFlexibleServerConfiguration configuration,
+      @NotNull AppEngineServerConfiguration configuration,
       @NotNull ServerTaskExecutor asyncTasksExecutor) {
-//    return new AppEngineFlexibleServerConnector();
     return new AppEngineServerConnector();
-  }
-
-  static class AppEngineFlexibleServerConnector extends ServerConnector {
-
-    @Override
-    public void connect(@NotNull ConnectionCallback callback) {
-      Services.getLoginService().logInIfNot();
-
-      callback.connected(new AppEngineFlexibleServerInstance());
-    }
   }
 }

@@ -20,8 +20,8 @@ import com.google.cloud.tools.intellij.appengine.cloud.AppEngineArtifactDeployme
 import com.google.cloud.tools.intellij.appengine.cloud.AppEngineDeploymentConfiguration;
 import com.google.cloud.tools.intellij.appengine.cloud.AppEngineDeploymentConfiguration.ConfigType;
 import com.google.cloud.tools.intellij.appengine.cloud.AppEngineEnvironment;
+import com.google.cloud.tools.intellij.appengine.cloud.AppEngineServerConfiguration;
 import com.google.cloud.tools.intellij.appengine.cloud.flexible.AppEngineFlexibleCloudType;
-import com.google.cloud.tools.intellij.appengine.cloud.flexible.AppEngineFlexibleServerConfiguration;
 import com.google.cloud.tools.intellij.appengine.project.AppEngineProjectService;
 import com.google.cloud.tools.intellij.appengine.util.AppEngineUtil;
 import com.google.cloud.tools.intellij.login.CredentialedUser;
@@ -157,7 +157,7 @@ public class AppEngineFlexibleSupportProvider extends FrameworkSupportInModulePr
       DeployToServerRunConfiguration<?, AppEngineDeploymentConfiguration> runConfiguration =
           (DeployToServerRunConfiguration<?, AppEngineDeploymentConfiguration>)
               settings.getConfiguration();
-      RemoteServer<AppEngineFlexibleServerConfiguration> server =
+      RemoteServer<AppEngineServerConfiguration> server =
           ContainerUtil.getFirstItem(RemoteServersManager.getInstance().getServers(serverType));
       if (server != null) {
         runConfiguration.setServerName(server.getName());
