@@ -35,7 +35,6 @@ public class AppEngineFlexibleStage {
   private LoggingHandler loggingHandler;
   private Path deploymentArtifactPath;
   private AppEngineDeploymentConfiguration deploymentConfiguration;
-  private AppEngineFlexibleDeploymentConfiguration flexDeploymentConfiguration;
 
   /**
    * Initialize the staging dependencies.
@@ -52,63 +51,32 @@ public class AppEngineFlexibleStage {
   }
 
   /**
-   * Initialize the staging dependencies.
-   */
-  public AppEngineFlexibleStage(
-      @NotNull CloudSdkAppEngineHelper helper,
-      @NotNull LoggingHandler loggingHandler,
-      @NotNull Path deploymentArtifactPath,
-      @NotNull AppEngineFlexibleDeploymentConfiguration flexDeploymentConfiguration) {
-    this.helper = helper;
-    this.loggingHandler = loggingHandler;
-    this.deploymentArtifactPath = deploymentArtifactPath;
-    this.flexDeploymentConfiguration = flexDeploymentConfiguration;
-  }
-
-  /**
    * Given a local staging directory, stage the application in preparation for deployment to the
    * App Engine flexible environment.
    */
   public void stage(@NotNull Path stagingDirectory) {
-    if (flexDeploymentConfiguration != null) {
-      stage2(stagingDirectory);
-      return;
-    }
-
     try {
       Path stagedArtifactPath = stagingDirectory.resolve(
           "target" + AppEngineFlexDeploymentArtifactType.typeForPath(deploymentArtifactPath));
       Files.copy(deploymentArtifactPath, stagedArtifactPath);
 
+      // Uses user-specified app.yaml and Dockerfile files if they exist. Auto generates them
+      // otherwise.
       Path appYamlPath = deploymentConfiguration.isAuto()
+          || !Files.exists(Paths.get(deploymentConfiguration.getAppYamlPath()))
           ? helper.defaultAppYaml()
           : Paths.get(deploymentConfiguration.getAppYamlPath());
       Files.copy(appYamlPath, stagingDirectory.resolve("app.yaml"));
 
       Path dockerFilePath = deploymentConfiguration.isAuto()
+          || !Files.exists(Paths.get(deploymentConfiguration.getDockerFilePath()))
           ? helper.defaultDockerfile(
-          AppEngineFlexDeploymentArtifactType.typeForPath(deploymentArtifactPath))
+              AppEngineFlexDeploymentArtifactType.typeForPath(deploymentArtifactPath))
           : Paths.get(deploymentConfiguration.getDockerFilePath());
       Files.copy(dockerFilePath, stagingDirectory.resolve("Dockerfile"));
     } catch (IOException ex) {
       loggingHandler.print(ex.getMessage() + "\n");
       throw new RuntimeException(ex);
-    }
-  }
-
-  private void stage2(Path stagingDirectory) {
-    try {
-      Path stagedArtifactPath = stagingDirectory.resolve(
-          "target" + AppEngineFlexDeploymentArtifactType.typeForPath(deploymentArtifactPath));
-      Files.copy(deploymentArtifactPath, stagedArtifactPath);
-
-      Files.copy(Paths.get(flexDeploymentConfiguration.getAppYamlPath()),
-          stagingDirectory.resolve("app.yaml"));
-
-      Files.copy(Paths.get(flexDeploymentConfiguration.getDockerfilePath()),
-          stagingDirectory.resolve("Dockerfile"));
-    } catch (IOException ioe) {
-      throw new RuntimeException(ioe);
     }
   }
 }

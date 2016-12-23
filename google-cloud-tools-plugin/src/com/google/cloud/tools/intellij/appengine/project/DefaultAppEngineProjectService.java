@@ -49,6 +49,7 @@ import java.util.Collections;
 public class DefaultAppEngineProjectService extends AppEngineProjectService {
 
   private static final String AE_WEB_XML_RUNTIME_TAG = "runtime";
+  private static final String SERVICE_TAG = "service:";
 
   private AppEngineAssetProvider assetProvider;
 
@@ -214,11 +215,15 @@ public class DefaultAppEngineProjectService extends AppEngineProjectService {
 
     try {
       for (String line : Files.readAllLines(appYamlPath)) {
-
+        if (line.startsWith(SERVICE_TAG)) {
+          return line.substring(SERVICE_TAG.length()).trim();
+        }
       }
     } catch (IOException ioe) {
       return null;
     }
+
+    // Not found.
     return null;
   }
 }

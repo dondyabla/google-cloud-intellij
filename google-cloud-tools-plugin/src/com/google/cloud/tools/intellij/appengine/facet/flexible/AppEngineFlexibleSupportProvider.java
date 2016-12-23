@@ -16,10 +16,11 @@
 
 package com.google.cloud.tools.intellij.appengine.facet.flexible;
 
+import com.google.cloud.tools.intellij.appengine.cloud.AppEngineArtifactDeploymentSourceType;
 import com.google.cloud.tools.intellij.appengine.cloud.AppEngineDeploymentConfiguration;
+import com.google.cloud.tools.intellij.appengine.cloud.AppEngineDeploymentConfiguration.ConfigType;
 import com.google.cloud.tools.intellij.appengine.cloud.AppEngineEnvironment;
 import com.google.cloud.tools.intellij.appengine.cloud.flexible.AppEngineFlexibleCloudType;
-import com.google.cloud.tools.intellij.appengine.cloud.flexible.AppEngineFlexibleDeploymentConfiguration;
 import com.google.cloud.tools.intellij.appengine.cloud.flexible.AppEngineFlexibleServerConfiguration;
 import com.google.cloud.tools.intellij.appengine.project.AppEngineProjectService;
 import com.google.cloud.tools.intellij.appengine.util.AppEngineUtil;
@@ -47,6 +48,7 @@ import com.intellij.packaging.impl.artifacts.ArtifactUtil;
 import com.intellij.remoteServer.ServerType;
 import com.intellij.remoteServer.configuration.RemoteServer;
 import com.intellij.remoteServer.configuration.RemoteServersManager;
+import com.intellij.remoteServer.configuration.deployment.ArtifactDeploymentSource;
 import com.intellij.remoteServer.impl.configuration.deployment.DeployToServerConfigurationType;
 import com.intellij.remoteServer.impl.configuration.deployment.DeployToServerConfigurationTypesRegistrar;
 import com.intellij.remoteServer.impl.configuration.deployment.DeployToServerRunConfiguration;
@@ -91,7 +93,7 @@ public class AppEngineFlexibleSupportProvider extends FrameworkSupportInModulePr
     return facets != null && !facets.isEmpty();
   }
 
-  class AppEngineFlexibleSupportConfigurable extends FrameworkSupportInModuleConfigurable {
+  static class AppEngineFlexibleSupportConfigurable extends FrameworkSupportInModuleConfigurable {
     private NewFlexibleProjectPanel newProjectPanel;
 
     public AppEngineFlexibleSupportConfigurable(FrameworkSupportModel model) {
@@ -158,21 +160,25 @@ public class AppEngineFlexibleSupportProvider extends FrameworkSupportInModulePr
       }
 
       // Sets the first found Flex deployable, if any exists, in the run config.
-//      AppEngineProjectService projectService = AppEngineProjectService.getInstance();
-//      for (Artifact artifact : ArtifactUtil.getArtifactsContainingModuleOutput(module)) {
-//        if (projectService.isAppEngineFlexArtifactType(artifact)) {
-//          runConfiguration.setDeploymentSource(
-//              AppEngineUtil.createArtifactDeploymentSource(module.getProject(), artifact,
-//                  AppEngineEnvironment.APP_ENGINE_FLEX));
-//          break;
-//        }
-//      }
+      AppEngineProjectService projectService = AppEngineProjectService.getInstance();
+      for (Artifact artifact : ArtifactUtil.getArtifactsContainingModuleOutput(module)) {
+        if (projectService.isAppEngineFlexArtifactType(artifact)) {
+          ArtifactDeploymentSource deploymentSource = AppEngineUtil.createArtifactDeploymentSource(
+              module.getProject(), artifact, AppEngineEnvironment.APP_ENGINE_FLEX);
+          runConfiguration.setDeploymentSource(deploymentSource);
+          AppEngineArtifactDeploymentSourceType sourceType =
+              (AppEngineArtifactDeploymentSourceType) deploymentSource.getType();
+          sourceType.setBuildBeforeRunTask(runConfiguration, deploymentSource);
+          break;
+        }
+      }
 
       // Copies the specified app.yaml and Dockerfile paths to the deployment run config.
       AppEngineDeploymentConfiguration deployConfiguration =
           new AppEngineDeploymentConfiguration();
       deployConfiguration.setAppYamlPath(facet.getConfiguration().getAppYamlPath());
       deployConfiguration.setDockerFilePath(facet.getConfiguration().getDockerfilePath());
+      deployConfiguration.setConfigType(ConfigType.CUSTOM);
 
       // Set logged in user.
       CredentialedUser user = Services.getLoginService().getActiveUser();

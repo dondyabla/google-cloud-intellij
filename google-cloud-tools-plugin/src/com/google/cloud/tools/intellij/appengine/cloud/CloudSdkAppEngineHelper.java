@@ -188,28 +188,6 @@ public class CloudSdkAppEngineHelper implements AppEngineHelper {
     return new AppEngineExecutor(new AppEngineFlexibleDeployTask(deploy, flexibleStage));
   }
 
-  public AppEngineExecutor createFlexibleRunner(
-      LoggingHandler loggingHandler,
-      Path artifactToDeploy,
-      AppEngineDeploymentConfiguration config,
-      DeploymentOperationCallback callback) {
-    AppEngineDeploy deploy = new AppEngineDeploy(
-        this,
-        loggingHandler,
-        config,
-        AppEngineEnvironment.APP_ENGINE_FLEX,
-        callback
-    );
-
-    AppEngineFlexibleStage flexibleStage = new AppEngineFlexibleStage(
-        this,
-        loggingHandler,
-        artifactToDeploy,
-        config);
-
-    return new AppEngineExecutor(new AppEngineFlexibleDeployTask(deploy, flexibleStage));
-  }
-
   @Override
   public Path createStagingDirectory(
       LoggingHandler loggingHandler,
