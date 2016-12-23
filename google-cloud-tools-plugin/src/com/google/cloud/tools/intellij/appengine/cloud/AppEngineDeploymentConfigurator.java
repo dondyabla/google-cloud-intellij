@@ -16,6 +16,7 @@
 
 package com.google.cloud.tools.intellij.appengine.cloud;
 
+import com.google.cloud.tools.intellij.appengine.cloud.flexible.AppEngineFlexibleDeploymentEditor;
 import com.google.cloud.tools.intellij.appengine.util.AppEngineUtil;
 
 import com.intellij.openapi.diagnostic.Logger;
@@ -73,6 +74,11 @@ public class AppEngineDeploymentConfigurator extends
           String.format("Deployment source with name %s is not deployable to App Engine.",
               source.getPresentableName()));
       return null;
+    }
+
+    if ((((AppEngineDeployable) source).getEnvironment().equals(
+        AppEngineEnvironment.APP_ENGINE_FLEX))) {
+      return new AppEngineFlexibleDeploymentEditor(project);
     }
 
     return new AppEngineDeploymentRunConfigurationEditor(
